@@ -1,34 +1,29 @@
 import axios from 'axios';
 
-const service = axios.create({
-    // process.env.NODE_ENV === 'development' 来判断是否开发环境
-    // easy-mock服务挂了，暂时不使用了
-    // baseURL: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
-    timeout: 5000
-});
+export default function request(config) {
+    // 1.创建axios的实例
+    const instance = axios.create({
+        baseURL: 'http://127.0.0.1:80/',
+        timeout: 10000
+    })
+    // 携带Cookie访问服务端
+    axios.defaults.withCredentials = true;
 
-service.interceptors.request.use(
-    config => {
-        return config;
-    },
-    error => {
-        console.log(error);
-        return Promise.reject();
-    }
-);
+    // 2.axios的拦截器
+    // 2.1.请求拦截的作用
+    instance.interceptors.request.use(config => {
+        return config
+    }, err => {
+        // console.log(err);
+    })
 
-service.interceptors.response.use(
-    response => {
-        if (response.status === 200) {
-            return response.data;
-        } else {
-            Promise.reject();
-        }
-    },
-    error => {
-        console.log(error);
-        return Promise.reject();
-    }
-);
+    // 2.2.响应拦截
+    instance.interceptors.response.use(res => {
+        return res.data
+    }, err => {
+        console.log(err);
+    })
 
-export default service;
+    // 3.发送真正的网络请求
+    return instance(config)
+}

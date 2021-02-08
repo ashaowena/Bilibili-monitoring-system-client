@@ -59,12 +59,12 @@ export default {
                 {
                     icon: 'el-icon-lx-home',
                     index: 'dashboard',
-                    title: '系统首页'
+                    title: '数据总览'
                 },
                 {
                     icon: 'el-icon-lx-cascades',
                     index: 'table',
-                    title: '基础表格'
+                    title: '账户管理'
                 },
                 {
                     icon: 'el-icon-lx-copy',

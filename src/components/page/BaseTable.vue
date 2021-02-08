@@ -1,56 +1,61 @@
 <template>
     <div>
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 基础表格
-                </el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
+<!--        <div class="crumbs">-->
+<!--            <el-breadcrumb separator="/">-->
+<!--                <el-breadcrumb-item>-->
+<!--                    <i class="el-icon-lx-cascades"></i> 基础表格-->
+<!--                </el-breadcrumb-item>-->
+<!--            </el-breadcrumb>-->
+<!--        </div>-->
         <div class="container">
             <div class="handle-box">
+<!--                <el-select v-model="query.address" placeholder="地址" class="handle-select mr10">-->
+<!--                    <el-option key="1" label="广东省" value="广东省"></el-option>-->
+<!--                    <el-option key="2" label="湖南省" value="湖南省"></el-option>-->
+<!--                </el-select>-->
+<!--                <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>-->
+<!--                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>-->
+                <select-wrapper class='group-select'></select-wrapper>
                 <el-button
                     type="primary"
-                    icon="el-icon-delete"
-                    class="handle-del mr10"
+                    icon="el-icon-add"
+                    class="handle-add mr10"
                     @click="delAllSelection"
-                >批量删除</el-button>
-                <el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
-                <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                >新增</el-button>
             </div>
             <el-table
-                :data="tableData"
+                :data="Ups"
                 border
                 class="table"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="name" label="用户名"></el-table-column>
-                <el-table-column label="账户余额">
-                    <template slot-scope="scope">￥{{scope.row.money}}</template>
+                <el-table-column  type="selection" width="55" align="center"></el-table-column>
+                <el-table-column prop="id" label="UID" width="100" align="center">
+                    <template slot-scope='scope'>{{scope.row.uid}}</template>
+                </el-table-column>
+                <el-table-column prop="name" label="用户名">
+                    <template slot-scope='scope'>{{scope.row.name}}</template>
+                </el-table-column>
+                <el-table-column label="所属分组">
+                    <template slot-scope="scope">{{convertDefault(scope.row.group.groupName)}}</template>
                 </el-table-column>
                 <el-table-column label="头像(查看大图)" align="center">
                     <template slot-scope="scope">
                         <el-image
                             class="table-td-thumb"
-                            :src="scope.row.thumb"
-                            :preview-src-list="[scope.row.thumb]"
+                            :src="scope.row.face"
+                            :preview-src-list="[scope.row.face]"
                         ></el-image>
                     </template>
                 </el-table-column>
                 <el-table-column prop="address" label="地址"></el-table-column>
-                <el-table-column label="状态" align="center">
+                <el-table-column label="是否大会员" align="center">
                     <template slot-scope="scope">
                         <el-tag
-                            :type="scope.row.state==='成功'?'success':(scope.row.state==='失败'?'danger':'')"
-                        >{{scope.row.state}}</el-tag>
+                            :type="scope.row.text && scope.row.text !== ''?'success':'danger'"
+                        >{{scope.row.text && scope.row.text !== ''?'是':'否'}}</el-tag>
                     </template>
                 </el-table-column>
 
@@ -61,7 +66,7 @@
                             type="text"
                             icon="el-icon-edit"
                             @click="handleEdit(scope.$index, scope.row)"
-                        >编辑</el-button>
+                        >修改分组</el-button>
                         <el-button
                             type="text"
                             icon="el-icon-delete"
@@ -87,9 +92,9 @@
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
                 <el-form-item label="用户名">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.name" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
+                <el-form-item label="分组">
                     <el-input v-model="form.address"></el-input>
                 </el-form-item>
             </el-form>
@@ -103,8 +108,13 @@
 
 <script>
 import { fetchData } from '../../api/index';
+import SelectWrapper from '@/components/common/content/SelectWrapper';
+import { upVo } from '@/utils/dashboard';
+
+
 export default {
     name: 'basetable',
+    components: { SelectWrapper },
     data() {
         return {
             query: {
@@ -120,13 +130,35 @@ export default {
             pageTotal: 0,
             form: {},
             idx: -1,
-            id: -1
+            id: -1,
+            Groups: [],
+            Ups: []
+
         };
     },
     created() {
-        this.getData();
+        let item = localStorage.getItem('groups');
+        this.Groups = JSON.parse(item)
+        this.Groups.forEach(group => {
+            group.upVos.forEach(up => {
+                let vo = new upVo(up,group);
+                this.Ups.push(vo);
+            });
+        });
+
     },
     methods: {
+        convertDefault(vaule) {
+            return vaule.startsWith('default:') ? '无' : vaule;
+        },
+        getUpsByGroup(group) {
+            this.Ups = [];
+            this.Groups.find(item => item.id === group.id).upVos.forEach(up => {
+                this.Ups.push(new upVo(up,group));
+            });
+
+        },
+
         // 获取 easy-mock 的模拟数据
         getData() {
             fetchData(this.query).then(res => {
@@ -187,9 +219,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='less'>
 .handle-box {
     margin-bottom: 20px;
+    height: 32px;
 }
 
 .handle-select {
@@ -200,6 +233,16 @@ export default {
     width: 300px;
     display: inline-block;
 }
+
+.group-select {
+    float: left;
+}
+
+.handle-add {
+    float: left;
+    height: 32px;
+}
+
 .table {
     width: 100%;
     font-size: 14px;

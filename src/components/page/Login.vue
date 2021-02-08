@@ -28,12 +28,14 @@
 </template>
 
 <script>
+import getUserInfo from '@/utils/dashboard';
+
 export default {
     data: function() {
         return {
             param: {
                 username: 'admin',
-                password: '123123',
+                password: 'admin',
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -45,14 +47,22 @@ export default {
         submitForm() {
             this.$refs.login.validate(valid => {
                 if (valid) {
-                    this.$message.success('登录成功');
-                    localStorage.setItem('ms_username', this.param.username);
-                    this.$router.push('/');
+                    getUserInfo(this.param).then(res => {
+                        console.log();
+                        if (res && res.code === 200) {
+                            this.$message.success('登录成功');
+                            localStorage.setItem('ms_username', this.param.username);
+                            this.$router.push('/');
+                            return true;
+                        } else {
+                            this.$message.error('账号密码错误！');
+                        }
+                    })
                 } else {
                     this.$message.error('请输入账号和密码');
                     console.log('error submit!!');
-                    return false;
                 }
+                return false;
             });
         },
     },
@@ -82,7 +92,7 @@ export default {
     width: 350px;
     margin: -190px 0 0 -175px;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.5);
     overflow: hidden;
 }
 .ms-content {

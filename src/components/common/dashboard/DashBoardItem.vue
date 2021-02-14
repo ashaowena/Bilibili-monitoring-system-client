@@ -10,28 +10,28 @@
                 <div>昨日</div>
             </div>
             <div class='item'>
-                <div style='margin-top: 12px'>{{Up.today_increment.dProductions}}</div>
-                <div>{{Up.before_increment.dProductions}}</div>
+                <div style='margin-top: 12px'>{{Up.today_increment.dproductions}}</div>
+                <div>{{Up.before_increment.dproductions}}</div>
             </div>
             <div class='item'>
-                <div style='margin-top: 12px'>{{Up.today_increment.dFans}}</div>
-                <div>{{Up.before_increment.dFans}}</div>
+                <div style='margin-top: 12px'>{{Up.today_increment.dfans}}</div>
+                <div>{{Up.before_increment.dfans}}</div>
             </div>
             <div class='item '>
-                <div style='margin-top: 12px'>{{Up.today_increment.dLike}}</div>
-                <div>{{Up.before_increment.dLike}}</div>
+                <div style='margin-top: 12px'>{{Up.today_increment.dlike}}</div>
+                <div>{{Up.before_increment.dlike}}</div>
             </div>
             <div class='item'>
-                <div style='margin-top: 12px'>{{Up.today_increment.dFavorite}}</div>
-                <div>{{Up.before_increment.dFavorite}}</div>
+                <div style='margin-top: 12px'>{{Up.today_increment.dfavorite}}</div>
+                <div>{{Up.before_increment.dfavorite}}</div>
             </div>
             <div class='item'>
-                <div style='margin-top: 12px'>{{Up.today_increment.dCoin}}</div>
-                <div>{{Up.before_increment.dCoin}}</div>
+                <div style='margin-top: 12px'>{{Up.today_increment.dcoin}}</div>
+                <div>{{Up.before_increment.dcoin}}</div>
             </div>
             <div class='item'>
-                <div style='margin-top: 12px'>{{Up.today_increment.dReply}}</div>
-                <div>{{Up.before_increment.dReply}}</div>
+                <div style='margin-top: 12px'>{{Up.today_increment.dreply}}</div>
+                <div>{{Up.before_increment.dreply}}</div>
             </div>
 
         </div>

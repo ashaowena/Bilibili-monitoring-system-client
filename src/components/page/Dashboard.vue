@@ -4,7 +4,9 @@
             <el-col :span='24'>
                 <el-card shadow='hover' class='mgb20' style='height:604px;'>
                     <div class='handle-box'>
-                        <select-wrapper @selectItem='getUpsByGroup'></select-wrapper>
+                        <select-wrapper @selectItem='getUpsByGroup0'>
+                            <template slot='default'>按分组查看</template>
+                        </select-wrapper>
                     </div>
                     <div class='main-data'>
                         <div class='main-data-head'>
@@ -31,7 +33,7 @@
                             </ul>
                         </div>
                         <div class='main-data-body'>
-                            <dash-board-item v-for='(item,index) in this.Ups' :Up='item' :key='index'></dash-board-item>
+                            <dash-board-item v-for='(item,index) in Ups' :Up='item' :key='index'></dash-board-item>
                             <div v-if='this.loading' class='loading'>加载中，请稍后。。。</div>
                         </div>
                         <div class='main-data-bottom'>
@@ -41,76 +43,52 @@
                                 <div>昨日</div>
                             </div>
                         </div>
-
                     </div>
                 </el-card>
             </el-col>
         </el-row>
     </div>
+
 </template>
 
 <script>
 import DashBoardItem from '@/components/common/dashboard/DashBoardItem';
 import SelectWrapper from '@/components/common/content/SelectWrapper';
-import { getUpGroups, upVo } from '@/utils/dashboard';
+import {refreshData} from '@/mixin/mixin';
+
 
 export default {
     name: 'dashboard',
     data() {
         return {
-            loading: true,
             query: {
                 address: '',
                 name: '',
                 pageIndex: 1,
                 pageSize: 10
             },
-            Groups: [],
-            Ups: []
         };
     },
     components: {
         DashBoardItem,
         SelectWrapper
     },
+    mixins: [refreshData],
     methods: {
         convertDefault(vaule) {
-            return vaule.startsWith('default:') ? '全部' : vaule;
+            return vaule.startsWith('default:') ? '无分组' : vaule;
         },
-        getUpsByGroup(group) {
-            this.Ups = [];
-            this.Groups.find(item => item.id === group.id).upVos.forEach(up => {
-                this.Ups.push(new upVo(up,group));
-            });
-
+        getUpsByGroup0(group) {
+            let ups = this.getUpsByGroup(group);
+            this.Ups = ups
         }
+
     },
-    // activated() {
-    //     let groups = localStorage.getItem('groups');
-    //     groups.forEach(group => {
-    //         group.upVos.forEach(up => {
-    //             let vo = new upVo(up,group.groupName);
-    //             this.Ups.push(vo);
-    //         });
-    //     });
-    //     this.loading = false
-    // },
-
-    created: function() {
-
-        getUpGroups().then(res => {
-            let data = JSON.parse(res.data);
-            this.loading = false;
-            this.Groups = data;
-            localStorage.setItem('groups', JSON.stringify(data));
-            data.forEach(group => {
-                group.upVos.forEach(up => {
-                    let vo = new upVo(up,group);
-                    this.Ups.push(vo);
-                });
-            });
-
-        });
+    activated() {
+        // this.refresh()
+    },
+    created() {
+        this.refresh()
     }
 
 };

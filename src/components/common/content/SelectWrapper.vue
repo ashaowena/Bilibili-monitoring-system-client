@@ -1,7 +1,9 @@
 <template>
     <div>
-        <div class='select-title handle-del mr10'>按分组查看</div>
-        <el-select placeholder='分组' class='handle-select mr10' v-model='item'>
+        <div class='select-title handle-del mr10'>
+            <slot></slot>
+        </div>
+        <el-select placeholder='分组' class='handle-select mr10' :value='convertDefault(groupName)'>
             <el-option v-for='(group,index) in this.Groups'
                        :key='index'
                        :label='convertDefault(group.groupName)'
@@ -13,29 +15,50 @@
 </template>
 
 <script>
-
-
-import { upVo } from '@/utils/dashboard';
+import {mapGetters} from 'vuex'
 
 export default {
     name: 'SelectWrapper',
+    props: {
+        nowItem: {
+            type: Object,
+            default: null
+        }
+    },
     data() {
         return {
             Groups: [],
-            item: {}
-        }
+            groupName: ''
+        };
+    },
+    computed: {
+        ...mapGetters(['getGroups'])
     },
     methods: {
         convertDefault(vaule) {
-            return vaule.startsWith('default:') ? '全部' : vaule;
+            return vaule.startsWith('default:') ? '无分组' : vaule;
         },
         getUpsByGroup(group) {
-            this.$emit('selectItem',group)
+            this.groupName = this.convertDefault(group.groupName)
+            this.$emit('selectItem', group);
         }
     },
     created() {
-        let item = localStorage.getItem('groups');
-        this.Groups = JSON.parse(item)
+        // let item = localStorage.getItem('groups');
+        // this.Groups = JSON.parse(item);
+        this.Groups = this.getGroups
+        if (this.nowItem !== null) {
+            this.groupName = this.nowItem.groupName;
+            this.$emit('selectItem', this.nowItem);
+        } else {
+            this.groupName = '无分组'
+            let defaultGroup = this.Groups.find(group =>  group.groupName.startsWith('default:'));
+            this.$emit('selectItem', defaultGroup);
+        }
+
+
+
+
     }
 };
 </script>
@@ -45,6 +68,7 @@ export default {
     float: left;
     line-height: 32px;
 }
+
 .handle-box {
     margin-bottom: 20px;
 }

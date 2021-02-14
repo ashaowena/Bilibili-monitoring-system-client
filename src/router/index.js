@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+
 Vue.use(Router);
 
 export default new Router({
@@ -20,14 +21,19 @@ export default new Router({
                     meta: { title: '数据总览' }
                 },
                 {
-                    path: '/icon',
-                    component: () => import(/* webpackChunkName: "icon" */ '../components/page/Icon.vue'),
-                    meta: { title: '自定义图标' }
-                },
-                {
                     path: '/table',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
                     meta: { title: '账户管理' }
+                },
+                {
+                    path: '/:uid',
+                    component: () => import(/* webpackChunkName: "table" */ '../components/page/Detail/DetailMain'),
+                    meta: { title: '详细信息'},
+                },
+                {
+                    path: '/icon',
+                    component: () => import(/* webpackChunkName: "icon" */ '../components/page/Icon.vue'),
+                    meta: { title: '自定义图标' }
                 },
                 {
                     path: '/tabs',

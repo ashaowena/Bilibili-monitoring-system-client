@@ -29,8 +29,7 @@
                     <template slot-scope='scope'>
                         <el-image
                             class='table-td-thumb'
-                            :src='scope.row.face'
-                            :preview-src-list='[scope.row.face]'
+                            :src='"http://127.0.0.1/proxyImg?path=" + scope.row.face'
                         ></el-image>
                     </template>
                 </el-table-column>
@@ -123,7 +122,7 @@ export default {
             this.Ups = ups
         },
         showDetail(scope) {
-            this.$router.push('/' + scope.row.uid);
+            this.$router.push('/detail/' + scope.row.uid);
         },
         convertDefault(vaule) {
             return vaule.startsWith('default:') ? '无' : vaule;

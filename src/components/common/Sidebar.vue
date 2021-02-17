@@ -58,17 +58,17 @@ export default {
             items: [
                 {
                     icon: 'el-icon-lx-home',
-                    index: 'dashboard',
+                    index: '/dashboard',
                     title: '数据总览'
                 },
                 {
                     icon: 'el-icon-lx-cascades',
-                    index: 'table',
+                    index: '/table',
                     title: '账户管理'
                 },
                 {
                     icon: 'el-icon-lx-copy',
-                    index: 'tabs',
+                    index: '/tabs',
                     title: 'tab选项卡'
                 },
                 {
@@ -155,6 +155,8 @@ export default {
     },
     computed: {
         onRoutes() {
+
+            // return this.$route.path.replace(this.$route.path.split('/')[0])
             return this.$route.path.replace('/', '');
         }
     },

@@ -10,7 +10,7 @@
                 <hr />
             </div>
             <right-cart-abstract v-show='isActive(0)' :uid='uid'></right-cart-abstract>
-            <right-cart-productions v-show='isActive(1)'></right-cart-productions>
+            <right-cart-productions v-show='isActive(1)' :uid='uid'></right-cart-productions>
             <right-cart-public v-show='isActive(2)'></right-cart-public>
         </el-card>
     </div>

@@ -5,8 +5,7 @@
                 <div class='user-info-cont0'>
                     <el-image
                         class='table-td-thumb'
-                        :src='UpDetail.info.face'
-                        :preview-src-list='[UpDetail.info.face]'
+                        :src='"http://127.0.0.1/proxyImg?path=" + UpDetail.info.face'
                     ></el-image>
                     <div class='user-info-head'>
                         <el-link :underline='false' target='_blank'
@@ -18,11 +17,11 @@
                 </div>
                 <div class='user-info-cont1'>
                     <span>分类：<em></em></span><span>性别：<em>{{ UpDetail.info.sex }}</em></span>
-                    <span>等级：<em>{{ UpDetail.info.level }}</em></span><span>会员：<em>{{}}</em></span>
+                    <span>等级：<em>{{ UpDetail.info.level }}</em></span><span>会员：<em>{{UpDetail.vip}}</em></span>
                 </div>
                 <div class='user-info-cont2' :class='{"open": isOpen}'>
-                    <p><span>官方认证类型：</span>{{ UpDetail.info.official.label }}</p>
-                    <p><span>个性签名：</span>{{ UpDetail.info.official.label }}</p>
+                    <p><span>官方认证类型：</span>{{ UpDetail.info.offical }}</p>
+                    <p><span>个性签名：</span>{{ UpDetail.info.sign }}</p>
                     <div class='video-label'>
                         label
                     </div>
@@ -38,14 +37,16 @@
 </template>
 
 <script>
-import { getDetail } from '@/utils/DetailMain';
+
 
 export default {
     name: 'DetailLeftCol',
     props: {
         UpDetails: {
             type: Array,
-            default: []
+            default() {
+                return []
+            }
         }
     },
     data() {
@@ -57,6 +58,9 @@ export default {
         UpDetail() {
             return this.UpDetails.find(item => item.upStatus.uid === this.$route.params.uid);
         }
+    },
+    created() {
+        console.log(this.UpDetails);
     }
 };
 </script>
@@ -125,6 +129,8 @@ el-button {
 }
 
 .user-info-cont2 {
+    font-size: 12px;
+
     span {
         height: 50%;
         width: 50%;

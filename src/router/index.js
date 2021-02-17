@@ -23,10 +23,17 @@ export default new Router({
                 {
                     path: '/table',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
-                    meta: { title: '账户管理' }
+                    meta: { title: '账户管理' },
+                    // children: [
+                    //     {
+                    //         path: '/:uid',
+                    //         component: () => import(/* webpackChunkName: "table" */ '../components/page/Detail/DetailMain'),
+                    //         meta: { title: '详细信息'},
+                    //     }
+                    // ]
                 },
                 {
-                    path: '/:uid',
+                    path: '/detail/:uid',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/Detail/DetailMain'),
                     meta: { title: '详细信息'},
                 },

@@ -1,12 +1,18 @@
 <template>
     <div class='right-cart-abstract'>
         <div class='up-period-choose'>
-            <ul>
-                <li @click='getDetail0(7)' :class='{active: isActive(7)}'>近7天</li>
-                <li @click='getDetail0(30)' :class='{active: isActive(30)}'>近30天</li>
-                <li @click='getDetail0(60)' :class='{active: isActive(60)}'>近60天</li>
-                <li @click='getDetail0(90)' :class='{active: isActive(90)}'>近90天</li>
-            </ul>
+<!--            <ul>-->
+<!--                <li @click='getDetail0(7)' :class='{active: isActive(7)}'>近7天</li>-->
+<!--                <li @click='getDetail0(30)' :class='{active: isActive(30)}'>近30天</li>-->
+<!--                <li @click='getDetail0(60)' :class='{active: isActive(60)}'>近60天</li>-->
+<!--                <li @click='getDetail0(90)' :class='{active: isActive(90)}'>近90天</li>-->
+<!--            </ul>-->
+            <el-button-group>
+                <el-button @click='getDetail0(7)' :class='{active: isActive(7)}'>近7天</el-button>
+                <el-button @click='getDetail0(30)' :class='{active: isActive(30)}'>近30天</el-button>
+                <el-button @click='getDetail0(60)' :class='{active: isActive(60)}'>近60天</el-button>
+                <el-button @click='getDetail0(90)' :class='{active: isActive(90)}'>近90天</el-button>
+            </el-button-group>
         </div>
         <right-cart-abstract-table :periodTabDetail='periodTabDetail'></right-cart-abstract-table>
         <right-cart-abstract-chart :chart-data='fansChart' v-if='!loading'>
@@ -39,7 +45,7 @@ export default {
     props: {
         uid: {
             type: String,
-            default: 0
+            default: "0"
         }
     },
     components: {
@@ -117,7 +123,7 @@ export default {
     margin-top: 5px;
     line-height: 30px;
     text-align: center;
-    border: 1px solid #999999;
+    //border: 1px solid #999999;
     border-radius: 4px;
     cursor: default;
     margin-bottom: 20px;
@@ -142,7 +148,10 @@ export default {
 }
 
 .active {
-    color: #999999;
+    //color: #999999;
+    color: #409eff;
+    border-color: #c6e2ff;
+    background-color: #ecf5ff;
 }
 
 

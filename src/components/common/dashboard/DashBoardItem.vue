@@ -1,7 +1,7 @@
 <template>
     <div class='body-item'>
         <div class='upInfo'>
-            <img :src='this.Up.face'>
+            <el-image fit="cover" class='img' :src='"http://127.0.0.1/proxyImg?path=" + this.Up.face'></el-image>
             <span>{{Up.name}}</span>
         </div>
         <div class='up-data'>
@@ -54,6 +54,17 @@ export default {
 </script>
 
 <style scoped lang='less'>
+
+.img {
+    float: left;
+    height: 40px;
+    width: 40px;
+    padding-right: 10px;
+    padding-top: 5px;
+    border-radius: 50%;
+
+}
+
 .body-item {
     height: 60px;
     font-size: 12px;
@@ -70,12 +81,16 @@ export default {
     }
 
     .upInfo {
-        line-height: 60px;
         float: left;
         //border: 1px solid black;
         width: 200px;
         height: 100%;
         margin: -1px 0;
+        span {
+            display: block;
+            float: left;
+            line-height: 50px;
+        }
     }
 
     .up-data {

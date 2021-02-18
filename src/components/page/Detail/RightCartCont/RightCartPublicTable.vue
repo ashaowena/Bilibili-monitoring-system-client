@@ -12,35 +12,48 @@
 </template>
 
 <script>
-import {initBar} from '@/components/common/echart/echart';
+import { initBar } from '@/components/common/echart/echart';
+import bus from '@/components/common/bus';
 
 export default {
     name: 'RightCartPublicTable',
     props: {
-        bar_X: {
-            type: Array,
+        barWrapper: {
+            type: Object,
             default() {
-                return []
-            }
-        },
-        bar_Y: {
-            type: Array,
-            default() {
-                return [];
+                return {};
             }
         }
     },
     methods: {
         initBar0() {
-            initBar(this.$el.getElementsByClassName("main-bar")[0],this.bar_X,this.bar_Y)
+            console.log(this.barWrapper);
+            initBar(this.$el.getElementsByClassName('main-bar')[0], this.barWrapper.bar_X, this.barWrapper.bar_Y);
         }
+    },
+    mounted() {
+        this.initBar0();
+        bus.$on('reloadBar', () => {
+            this.initBar0();
+        });
+    },
+    destroyed() {
+        bus.$off('reloadBar');
     }
 };
 </script>
 
 <style scoped>
+.chart-main-contain {
+    margin-top: 20px;
+}
+
+.main-bar {
+    width: 800px !important;
+    height: 200px !important;
+}
+
 .chart-head {
-    padding-top: 24px;
     padding-bottom: 16px;
     font-size: 12px;
 }

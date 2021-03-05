@@ -27,7 +27,6 @@ export default {
     },
     methods: {
         initBar0() {
-            console.log(this.barWrapper);
             initBar(this.$el.getElementsByClassName('main-bar')[0], this.barWrapper.bar_X, this.barWrapper.bar_Y);
         }
     },

@@ -10,7 +10,7 @@
                 弹幕热词TOP10
             </template>
         </right-cart-public-table>
-        <right-cart-public-comment></right-cart-public-comment>
+        <right-cart-public-comment :uid='uid'></right-cart-public-comment>
     </div>
 </template>
 
@@ -57,6 +57,11 @@ export default {
     },
     created() {
         this.getPublicBarData0()
+    },
+    watch: {
+        uid() {
+             this.getPublicBarData0()
+        }
     }
 };
 </script>

@@ -70,6 +70,7 @@ export default {
             this.currentIndexDate = index;
             // 获取概览数据
             getTabDetail(this.uid, this.currentIndexDate).then(res => {
+                console.log(this.currentIndexDate);
                 if (res.code === 200) {
                     this.periodTabDetail = res.data;
                 } else if (res.code === 403) {
@@ -106,6 +107,9 @@ export default {
     },
     created() {
         this.getDetail0(7);
+        bus.$on("updateStatusImmediately", () => {
+            this.getDetail0(7)
+        } )
     },
     watch: {
         uid() {

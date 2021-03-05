@@ -30,13 +30,15 @@
                     <i :class='{"el-icon-bottom": !isOpen,"el-icon-top": isOpen}'></i>
                     更多资料
                 </div>
-                <el-button type='primary' class='el-icon-refresh'> 立即刷新</el-button>
+                <el-button type='primary' :class='{ "el-icon-refresh": !loading}' @click='updateStatus0'><i :class='{"el-icon-loading":loading}'></i> 立即刷新</el-button>
             </div>
         </el-card>
     </div>
 </template>
 
 <script>
+import {updateStatus} from '@/utils/leftcchart';
+import bus from '@/components/common/bus';
 
 
 export default {
@@ -52,15 +54,29 @@ export default {
     data() {
         return {
             isOpen: false,
+            loading: false
         };
+    },
+    methods: {
+        updateStatus0() {
+            this.loading = true
+            updateStatus(this.$route.params.uid).then((res) => {
+                if (res.code === 200) {
+                    bus.$emit("updateStatusImmediately")
+                } else {
+                    this.$message.error("服务异常，更新失败！")
+                }
+                this.loading = false
+            }).catch(e => {
+                this.$message.error("网络异常")
+                this.loading = false
+            })
+        }
     },
     computed: {
         UpDetail() {
             return this.UpDetails.find(item => item.upStatus.uid === this.$route.params.uid);
         }
-    },
-    created() {
-        console.log(this.UpDetails);
     }
 };
 </script>

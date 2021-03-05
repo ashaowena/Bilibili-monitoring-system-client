@@ -9,9 +9,9 @@
             <div>
                 <hr />
             </div>
-            <right-cart-abstract v-show='isActive(0)' :uid='uid'></right-cart-abstract>
-            <right-cart-productions v-show='isActive(1)' :uid='uid'></right-cart-productions>
-            <right-cart-public v-show='isActive(2)' :uid='uid'></right-cart-public>
+            <right-cart-abstract v-show='isActive(0)' :uid='uid()'></right-cart-abstract>
+            <right-cart-productions v-show='isActive(1)' :uid='uid()'></right-cart-productions>
+            <right-cart-public v-show='isActive(2)' :uid='uid()'></right-cart-public>
         </el-card>
     </div>
 </template>
@@ -44,13 +44,14 @@ export default {
     },
 
     computed: {
-        uid() {
-            return this.$route.params.uid
-        }
+
     },
     methods: {
         isActive(index) {
             return this.currentIndex === index;
+        },
+        uid() {
+            return this.$route.params.uid
         },
         transferIndex(index) {
             switch (index) {

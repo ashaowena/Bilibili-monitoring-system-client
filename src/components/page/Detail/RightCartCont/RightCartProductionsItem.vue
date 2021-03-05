@@ -67,6 +67,9 @@ export default {
             date.setTime(ctime * 1000);
             return formatDate(date, 'yyyy-MM-dd hh:mm:ss');
         }
+    },
+    created() {
+        console.log(this.videoItem);
     }
 };
 </script>
@@ -141,7 +144,7 @@ a {
 
 .video-img {
     width: 184px;
-    height: 100%;
+    height: 110px;
     border-radius: 2px;
     padding-right: 16px;
 }

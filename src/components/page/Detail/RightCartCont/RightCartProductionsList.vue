@@ -46,7 +46,7 @@
         </div>
         <div class='spit0'></div>
         <div class='video-list'>
-            <right-cart-productions-item v-for='(item,index) in videoList' :key='index' :videoItem='item'></right-cart-productions-item>
+            <right-cart-productions-item v-if='!listLoading' v-for='(item,index) in videoList' :key='index' :videoItem='item'></right-cart-productions-item>
             <p v-if="listLoading">加载中...</p>
             <p v-if="noMore">没有更多了</p>
         </div>
@@ -94,6 +94,7 @@ export default {
         },
         orderList(order) {
             this.orderType = order;
+            this.productionsList0();
         },
         searchSelect(value) {
             this.searchType = value;
@@ -117,6 +118,7 @@ export default {
             });
         },
         productionsList0() {
+            console.log(this.uid);
             this.listLoading = true
             this.videoList = []
             productionsList(this.wrapperQuery).then(res => {
@@ -171,6 +173,12 @@ export default {
         this.productionsTag0();
         this.productionsList0()
 
+    },
+    watch: {
+        uid() {
+            this.productionsTag0();
+            this.productionsList0()
+        }
     }
 
 };

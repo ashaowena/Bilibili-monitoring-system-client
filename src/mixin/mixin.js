@@ -5,7 +5,7 @@ import { mapGetters } from 'vuex';
 export const refreshData = {
     data() {
         return {
-            loading: false,
+            loading: true,
             Groups: [],
             Ups: []
         };
@@ -20,7 +20,9 @@ export const refreshData = {
                 if (res.code === 200) {
                     this.$store.dispatch('updateGroupFuture', res.data).then(() => {
                         this.Ups = this.getUps
+                        console.log(this.Ups);
                     });
+                    this.loading = false
                 } else if (res.code === 403) {
                     this.$message.error('请先登录！');
                     this.$router.replace('/login');

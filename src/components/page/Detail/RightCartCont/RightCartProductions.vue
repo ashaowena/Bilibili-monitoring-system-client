@@ -20,7 +20,8 @@ export default {
     components: {
         RightCartProductionsAbstract,
         RightCartProductionsList
-    }
+    },
+
 };
 </script>
 

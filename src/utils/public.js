@@ -9,3 +9,15 @@ export function getPublicBarData(uid) {
         method: 'post'
     })
 }
+
+export function getPublicReplies(uid,keyword,period) {
+    return request({
+        url: '/ReplyList',
+        params: {
+            uid: uid,
+            keyword: keyword,
+            period: period
+        },
+        method: 'post'
+    })
+}

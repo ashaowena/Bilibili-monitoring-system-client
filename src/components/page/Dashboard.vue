@@ -4,7 +4,7 @@
             <el-col :span='24'>
                 <el-card shadow='hover' class='mgb20' style='height:604px;'>
                     <div class='handle-box'>
-                        <select-wrapper @selectItem='getUpsByGroup0'>
+                        <select-wrapper  v-if='!loading' @selectItem='getUpsByGroup0'>
                             <template slot='default'>按分组查看</template>
                         </select-wrapper>
                     </div>
@@ -33,15 +33,18 @@
                             </ul>
                         </div>
                         <div class='main-data-body'>
-                            <dash-board-item v-for='(item,index) in Ups' :Up='item' :key='index'></dash-board-item>
-                            <div v-if='this.loading' class='loading'>加载中，请稍后。。。</div>
+                            <dash-board-item  v-if='!loading' v-for='(item,index) in Ups' :Up='item' :key='index'></dash-board-item>
+                            <div v-if='loading' class='loading'>加载中，请稍后。。。</div>
                         </div>
                         <div class='main-data-bottom'>
-                            <span>合计</span>
-                            <div class='up-data'>
-                                <div style='margin-top: 15px'>今日</div>
-                                <div>昨日</div>
-                            </div>
+<!--                            <div class='up-title'>-->
+<!--                                <span>合计</span>-->
+<!--                                <div class='up-data'>-->
+<!--                                    <div style='margin-top: 15px'>今日</div>-->
+<!--                                    <div>昨日</div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <dash-board-total v-if='!loading' :ups='Ups'></dash-board-total>
                         </div>
                     </div>
                 </el-card>
@@ -55,6 +58,7 @@
 import DashBoardItem from '@/components/common/dashboard/DashBoardItem';
 import SelectWrapper from '@/components/common/content/SelectWrapper';
 import {refreshData} from '@/mixin/mixin';
+import DashBoardTotal from '@/components/common/dashboard/DashBoardTotal';
 
 
 export default {
@@ -70,6 +74,7 @@ export default {
         };
     },
     components: {
+        DashBoardTotal,
         DashBoardItem,
         SelectWrapper
     },
@@ -84,11 +89,9 @@ export default {
         }
 
     },
-    activated() {
-        // this.refresh()
-    },
     created() {
         this.refresh()
+        console.log(this.Ups);
     }
 
 };
@@ -96,6 +99,9 @@ export default {
 
 
 <style scoped lang='less'>
+
+
+
 .select-title {
     float: left;
     line-height: 32px;
@@ -113,7 +119,7 @@ export default {
 .main-data-bottom {
     font-size: 12px;
     height: 55px;
-    line-height: 55px;
+    //line-height: 55px;
     border-bottom: 1px solid #999999;
 
     .up-data {

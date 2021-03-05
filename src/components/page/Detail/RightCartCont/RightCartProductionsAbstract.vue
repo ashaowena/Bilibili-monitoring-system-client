@@ -118,6 +118,11 @@ export default {
     },
     created() {
         this.productionsAbstract0()
+    },
+    watch: {
+        uid() {
+            this.productionsAbstract0()
+        }
     }
 };
 </script>
